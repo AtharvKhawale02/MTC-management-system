@@ -18,21 +18,12 @@ function Login() {
     }
 
     try {
-<<<<<<< HEAD
-=======
       // Send login request to backend
->>>>>>> b316133 (Connect backend auth and update frontend integration)
       const res = await axios.post("/auth/login", {
         email: emailOrUsername,
         password,
       });
 
-<<<<<<< HEAD
-      const role = res.data.role;
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", role);
-
-=======
       // STORE TOKEN: Save token in browser so user stays logged in
       localStorage.setItem('token', res.data.token);
       
@@ -43,7 +34,6 @@ function Login() {
       const role = res.data.user.role.toLowerCase();
 
       // Redirect based on role
->>>>>>> b316133 (Connect backend auth and update frontend integration)
       if (role === "admin") navigate("/admin");
       else if (role === "sales") navigate("/sales");
       else navigate("/quality");

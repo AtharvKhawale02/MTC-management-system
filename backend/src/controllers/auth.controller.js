@@ -17,16 +17,12 @@ exports.login = async (req, res) => {
     res.json({
       message: "Login successful",
       token: result.token,
-<<<<<<< HEAD
-      role: result.user.role
-=======
       user: {
         id: result.user.id,
         name: result.user.name,
         email: result.user.email,
         role: result.user.role
       }
->>>>>>> b316133 (Connect backend auth and update frontend integration)
     });
 
   } catch (error) {
@@ -34,9 +30,14 @@ exports.login = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-exports.checkAuth = (req, res) => {
-  res.json({ role: req.user.role, id: req.user.id });
+// CHECK AUTH: Verify if user's token is valid
+exports.checkAuth = async (req, res) => {
+  // req.user comes from auth.middleware.js (it decoded the token)
+  res.json({
+    role: req.user.role,
+    name: req.user.name,
+    email: req.user.email
+  });
 };
 
 exports.logout = async (req, res) => {
@@ -47,14 +48,4 @@ exports.logout = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Logout failed" });
   }
-=======
-// CHECK AUTH: Verify if user's token is valid
-exports.checkAuth = async (req, res) => {
-  // req.user comes from auth.middleware.js (it decoded the token)
-  res.json({
-    role: req.user.role,
-    name: req.user.name,
-    email: req.user.email
-  });
->>>>>>> b316133 (Connect backend auth and update frontend integration)
 };
