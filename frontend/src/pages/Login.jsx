@@ -18,15 +18,32 @@ function Login() {
     }
 
     try {
+<<<<<<< HEAD
+=======
+      // Send login request to backend
+>>>>>>> b316133 (Connect backend auth and update frontend integration)
       const res = await axios.post("/auth/login", {
         email: emailOrUsername,
         password,
       });
 
+<<<<<<< HEAD
       const role = res.data.role;
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", role);
 
+=======
+      // STORE TOKEN: Save token in browser so user stays logged in
+      localStorage.setItem('token', res.data.token);
+      
+      // STORE USER INFO: Save user data
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+
+      // Get user's role from response
+      const role = res.data.user.role.toLowerCase();
+
+      // Redirect based on role
+>>>>>>> b316133 (Connect backend auth and update frontend integration)
       if (role === "admin") navigate("/admin");
       else if (role === "sales") navigate("/sales");
       else navigate("/quality");
@@ -36,34 +53,37 @@ function Login() {
     }
   };
 
+
   return (
     <div style={styles.container}>
       <form onSubmit={handleLogin} style={styles.form}>
         <h2>Login</h2>
 
-        <input
-          type="text"
-          placeholder="Email or Username"
-          value={emailOrUsername}
-          onChange={(e) => setEmailOrUsername(e.target.value)}
-          style={styles.input}
-        />
+        {error && <p style={styles.error}>{error}</p>}
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-        />
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            placeholder="admin@gmail.com"
+            value={emailOrUsername}
+            onChange={(e) => setEmailOrUsername(e.target.value)}
+            style={styles.input}
+          />
+        </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+          />
+        </div>
 
-        <button
-          type="submit"
-          disabled={!emailOrUsername || !password}
-          style={styles.button}
-        >
+        <button type="submit" style={styles.button}>
           Login
         </button>
       </form>
@@ -73,23 +93,47 @@ function Login() {
 
 const styles = {
   container: {
-    height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    minHeight: "100vh",
+    backgroundColor: "#f5f5f5",
   },
   form: {
-    width: "300px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
+    backgroundColor: "white",
+    padding: "40px",
+    borderRadius: "8px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    width: "100%",
+    maxWidth: "400px",
   },
   input: {
+    width: "100%",
     padding: "10px",
+    margin: "8px 0 16px 0",
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+    fontSize: "14px",
+    boxSizing: "border-box",
   },
   button: {
-    padding: "10px",
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    fontSize: "16px",
     cursor: "pointer",
+    marginTop: "10px",
+  },
+  error: {
+    color: "#dc3545",
+    backgroundColor: "#f8d7da",
+    padding: "10px",
+    borderRadius: "4px",
+    marginBottom: "15px",
+    fontSize: "14px",
   },
 };
 

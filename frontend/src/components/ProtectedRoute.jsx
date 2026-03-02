@@ -8,7 +8,11 @@ function ProtectedRoute({ children, allowedRoles }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+<<<<<<< HEAD
         const res = await axios.get("/auth/check-auth");
+=======
+        const res = await axios.get("/auth/check-auth");  // Fixed: correct endpoint path
+>>>>>>> b316133 (Connect backend auth and update frontend integration)
         const userRole = res.data.role;
 
         if (allowedRoles.includes(userRole)) {

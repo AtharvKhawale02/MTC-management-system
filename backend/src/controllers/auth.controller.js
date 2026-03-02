@@ -1,5 +1,6 @@
 const authService = require("../services/auth.service");
 
+// LOGIN: Check email & password, return token + user info
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -12,10 +13,20 @@ exports.login = async (req, res) => {
 
     const result = await authService.login(email, password);
 
+    // FIXED: Return user info (name, email, role) so frontend knows who logged in
     res.json({
       message: "Login successful",
       token: result.token,
+<<<<<<< HEAD
       role: result.user.role
+=======
+      user: {
+        id: result.user.id,
+        name: result.user.name,
+        email: result.user.email,
+        role: result.user.role
+      }
+>>>>>>> b316133 (Connect backend auth and update frontend integration)
     });
 
   } catch (error) {
@@ -23,6 +34,7 @@ exports.login = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 exports.checkAuth = (req, res) => {
   res.json({ role: req.user.role, id: req.user.id });
 };
@@ -35,4 +47,14 @@ exports.logout = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Logout failed" });
   }
+=======
+// CHECK AUTH: Verify if user's token is valid
+exports.checkAuth = async (req, res) => {
+  // req.user comes from auth.middleware.js (it decoded the token)
+  res.json({
+    role: req.user.role,
+    name: req.user.name,
+    email: req.user.email
+  });
+>>>>>>> b316133 (Connect backend auth and update frontend integration)
 };
