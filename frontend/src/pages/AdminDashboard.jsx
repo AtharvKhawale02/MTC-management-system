@@ -5,7 +5,11 @@ function AdminDashboard() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await axios.post("/logout");
+    try {
+      await axios.post("/auth/logout");
+    } catch (_) {}
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate("/");
   };
 

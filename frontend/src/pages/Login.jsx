@@ -18,15 +18,17 @@ function Login() {
     }
 
     try {
-      const res = await axios.post("/login", {
-        emailOrUsername,
+      const res = await axios.post("/auth/login", {
+        email: emailOrUsername,
         password,
       });
 
       const role = res.data.role;
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", role);
 
-      if (role === "Admin") navigate("/admin");
-      else if (role === "Sales") navigate("/sales");
+      if (role === "admin") navigate("/admin");
+      else if (role === "sales") navigate("/sales");
       else navigate("/quality");
 
     } catch (err) {

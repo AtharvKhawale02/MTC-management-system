@@ -8,7 +8,7 @@ function ProtectedRoute({ children, allowedRoles }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("/check-auth");
+        const res = await axios.get("/auth/check-auth");
         const userRole = res.data.role;
 
         if (allowedRoles.includes(userRole)) {
