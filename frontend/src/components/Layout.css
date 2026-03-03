@@ -1,0 +1,26 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.layout-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
+}
+
+.layout-content.collapsed {
+  margin-left: 80px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+}

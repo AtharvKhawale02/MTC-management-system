@@ -29,14 +29,12 @@ function Login() {
       
       // STORE USER INFO: Save user data
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      
+      // STORE ROLE: Save role separately for easy access
+      localStorage.setItem('role', res.data.user.role.toLowerCase());
 
-      // Get user's role from response
-      const role = res.data.user.role.toLowerCase();
-
-      // Redirect based on role
-      if (role === "admin") navigate("/admin");
-      else if (role === "sales") navigate("/sales");
-      else navigate("/quality");
+      // Redirect all users to dashboard
+      navigate("/dashboard");
 
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -47,12 +45,12 @@ function Login() {
   return (
     <div style={styles.container}>
       <form onSubmit={handleLogin} style={styles.form}>
-        <h2>Login</h2>
+        <h2 style={styles.title}>Login to MTC System</h2>
 
         {error && <p style={styles.error}>{error}</p>}
 
-        <div>
-          <label>Email:</label>
+        <div style={styles.inputGroup}>
+          <label style={styles.label}>Email:</label>
           <input
             type="email"
             placeholder="admin@gmail.com"
@@ -62,8 +60,8 @@ function Login() {
           />
         </div>
 
-        <div>
-          <label>Password:</label>
+        <div style={styles.inputGroup}>
+          <label style={styles.label}>Password:</label>
           <input
             type="password"
             placeholder="Enter password"
@@ -97,33 +95,54 @@ const styles = {
     width: "100%",
     maxWidth: "400px",
   },
+  title: {
+    fontSize: "24px",
+    fontWeight: "600",
+    color: "#333",
+    marginTop: "0",
+    marginBottom: "30px",
+    textAlign: "center",
+  },
+  inputGroup: {
+    marginBottom: "20px",
+  },
+  label: {
+    display: "block",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#333",
+    marginBottom: "8px",
+  },
   input: {
     width: "100%",
-    padding: "10px",
-    margin: "8px 0 16px 0",
+    padding: "12px",
     border: "1px solid #ddd",
-    borderRadius: "4px",
+    borderRadius: "8px",
     fontSize: "14px",
     boxSizing: "border-box",
+    transition: "border-color 0.2s ease",
   },
   button: {
     width: "100%",
     padding: "12px",
-    backgroundColor: "#007bff",
+    background: "linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%)",
     color: "white",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "8px",
     fontSize: "16px",
+    fontWeight: "500",
     cursor: "pointer",
     marginTop: "10px",
+    transition: "opacity 0.2s ease",
   },
   error: {
     color: "#dc3545",
     backgroundColor: "#f8d7da",
-    padding: "10px",
-    borderRadius: "4px",
-    marginBottom: "15px",
+    padding: "12px",
+    borderRadius: "8px",
+    marginBottom: "20px",
     fontSize: "14px",
+    border: "1px solid #f5c6cb",
   },
 };
 
