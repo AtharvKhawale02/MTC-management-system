@@ -4,9 +4,9 @@ const pool = require("../config/db");
 exports.getAllValveTypes = async () => {
   const [rows] = await pool.query(
     `SELECT vt.id, vt.name, vt.created_at, vt.updated_at,
-            COUNT(vp.id) as parameter_count
+            COUNT(vtp.id) as parameter_count
      FROM valve_types vt
-     LEFT JOIN valve_parameters vp ON vt.id = vp.valve_type_id
+     LEFT JOIN valve_type_parameters vtp ON vt.id = vtp.valve_type_id
      GROUP BY vt.id, vt.name, vt.created_at, vt.updated_at
      ORDER BY vt.created_at DESC`
   );
@@ -17,9 +17,9 @@ exports.getAllValveTypes = async () => {
 exports.getValveTypeById = async (id) => {
   const [rows] = await pool.query(
     `SELECT vt.id, vt.name, vt.created_at, vt.updated_at,
-            COUNT(vp.id) as parameter_count
+            COUNT(vtp.id) as parameter_count
      FROM valve_types vt
-     LEFT JOIN valve_parameters vp ON vt.id = vp.valve_type_id
+     LEFT JOIN valve_type_parameters vtp ON vt.id = vtp.valve_type_id
      WHERE vt.id = ?
      GROUP BY vt.id, vt.name, vt.created_at, vt.updated_at`,
     [id]
@@ -73,7 +73,7 @@ exports.deleteValveType = async (id) => {
 // CHECK IF VALVE TYPE HAS PARAMETERS
 exports.hasParameters = async (id) => {
   const [rows] = await pool.query(
-    "SELECT COUNT(*) as count FROM valve_parameters WHERE valve_type_id = ?",
+    "SELECT COUNT(*) as count FROM valve_type_parameters WHERE valve_type_id = ?",
     [id]
   );
   return rows[0].count > 0;
@@ -97,4 +97,60 @@ exports.isUsedInTCDS = async (id) => {
     }
     throw error;
   }
+};
+
+// ✅ GET PARAMETERS LINKED TO A VALVE TYPE
+exports.getValveTypeParameters = async (valveTypeId) => {
+  const [rows] = await pool.query(
+    `SELECT p.id, p.name, p.type, p.is_mandatory, vtp.created_at as linked_at
+     FROM parameters p
+     JOIN valve_type_parameters vtp ON p.id = vtp.parameter_id
+     WHERE vtp.valve_type_id = ?
+     ORDER BY p.name`,
+    [valveTypeId]
+  );
+  return rows;
+};
+
+// ✅ GET AVAILABLE PARAMETERS (NOT LINKED TO VALVE TYPE)
+exports.getAvailableParameters = async (valveTypeId) => {
+  const [rows] = await pool.query(
+    `SELECT p.id, p.name, p.type, p.is_mandatory
+     FROM parameters p
+     WHERE p.id NOT IN (
+       SELECT parameter_id FROM valve_type_parameters WHERE valve_type_id = ?
+     )
+     ORDER BY p.name`,
+    [valveTypeId]
+  );
+  return rows;
+};
+
+// ✅ LINK PARAMETER TO VALVE TYPE
+exports.linkParameter = async (valveTypeId, parameterId) => {
+  const [result] = await pool.query(
+    `INSERT INTO valve_type_parameters (valve_type_id, parameter_id) 
+     VALUES (?, ?)`,
+    [valveTypeId, parameterId]
+  );
+  return result;
+};
+
+// ✅ UNLINK PARAMETER FROM VALVE TYPE
+exports.unlinkParameter = async (valveTypeId, parameterId) => {
+  await pool.query(
+    `DELETE FROM valve_type_parameters 
+     WHERE valve_type_id = ? AND parameter_id = ?`,
+    [valveTypeId, parameterId]
+  );
+};
+
+// ✅ CHECK IF PARAMETER IS LINKED
+exports.isParameterLinked = async (valveTypeId, parameterId) => {
+  const [rows] = await pool.query(
+    `SELECT COUNT(*) as count FROM valve_type_parameters 
+     WHERE valve_type_id = ? AND parameter_id = ?`,
+    [valveTypeId, parameterId]
+  );
+  return rows[0].count > 0;
 };

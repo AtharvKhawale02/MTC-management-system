@@ -45,4 +45,36 @@ router.delete(
   valveController.deleteValveType
 );
 
+// ✅ GET PARAMETERS FOR VALVE TYPE
+router.get(
+  "/valve-types/:id/parameters",
+  authenticate,
+  authorize("admin"),
+  valveController.getValveTypeParameters
+);
+
+// ✅ GET AVAILABLE PARAMETERS (NOT LINKED)
+router.get(
+  "/valve-types/:id/available-parameters",
+  authenticate,
+  authorize("admin"),
+  valveController.getAvailableParameters
+);
+
+// ✅ LINK PARAMETER TO VALVE TYPE
+router.post(
+  "/valve-types/:id/parameters",
+  authenticate,
+  authorize("admin"),
+  valveController.linkParameter
+);
+
+// ✅ UNLINK PARAMETER FROM VALVE TYPE
+router.delete(
+  "/valve-types/:id/parameters/:parameterId",
+  authenticate,
+  authorize("admin"),
+  valveController.unlinkParameter
+);
+
 module.exports = router;

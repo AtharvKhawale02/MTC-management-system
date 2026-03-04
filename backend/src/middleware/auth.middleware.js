@@ -11,19 +11,23 @@ exports.authenticate = async (req, res, next) => {
 
     const decoded = verifyToken(token);
 
+    // Verify user still exists and is active
     const [rows] = await pool.query(
-      "SELECT current_session_token FROM users WHERE id = ?",
+      "SELECT id, name, email, role, unit_id, is_active FROM users WHERE id = ? AND is_active = TRUE",
       [decoded.id]
     );
 
-    if (!rows.length || rows[0].current_session_token !== token) {
-      return res.status(401).json({ message: "Session expired." });
+    if (!rows.length) {
+      return res.status(401).json({ message: "User not found or inactive" });
     }
 
     req.user = decoded;
     next();
 
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: "Token expired" });
+    }
     res.status(401).json({ message: "Invalid token" });
   }
 };

@@ -24,8 +24,12 @@ function ValveTypes() {
       setLoading(true);
       const response = await axios.get("/valve-types");
       setValveTypes(response.data.data || []);
-    } catch {
-      showMessage("error", "Failed to load valve types");
+    } catch (error) {
+      if (error.response?.status === 401) {
+        showMessage("error", "Session expired. Please login again.");
+      } else {
+        showMessage("error", error.response?.data?.message || "Failed to load valve types");
+      }
     } finally {
       setLoading(false);
     }
@@ -60,7 +64,11 @@ function ValveTypes() {
       setShowModal(false);
       fetchValveTypes();
     } catch (error) {
-      showMessage("error", error.response?.data?.message || "Error occurred");
+      if (error.response?.status === 401) {
+        showMessage("error", "Session expired. Please login again.");
+      } else {
+        showMessage("error", error.response?.data?.message || "Error occurred");
+      }
     }
   };
 
@@ -71,15 +79,17 @@ function ValveTypes() {
       setValveToDelete(null);
       fetchValveTypes();
     } catch (error) {
-      showMessage("error", error.response?.data?.message || "Failed to delete valve type");
+      if (error.response?.status === 401) {
+        showMessage("error", "Session expired. Please login again.");
+      } else {
+        showMessage("error", error.response?.data?.message || "Failed to delete valve type");
+      }
     }
   };
 
   const handleEdit = (valveType) => {
-    // Navigate to parameter list page (to be implemented)
-    // navigate(`/admin/valve-config/valve-types/${valveType.id}/parameters`);
-    // For now, just open edit modal
-    openModal(valveType);
+    // Navigate to parameter management page
+    navigate(`/admin/valve-config/valve-types/${valveType.id}/parameters`);
   };
 
   return (

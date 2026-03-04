@@ -117,3 +117,94 @@ exports.deleteValveType = async (req, res) => {
     });
   }
 };
+
+//  GET PARAMETERS FOR VALVE TYPE
+exports.getValveTypeParameters = async (req, res) => {
+  try {
+    const valveTypeId = req.params.id;
+    const parameters = await valveService.getValveTypeParameters(valveTypeId);
+
+    res.json({
+      success: true,
+      data: parameters
+    });
+
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+//  GET AVAILABLE PARAMETERS
+exports.getAvailableParameters = async (req, res) => {
+  try {
+    const valveTypeId = req.params.id;
+    const parameters = await valveService.getAvailableParameters(valveTypeId);
+
+    res.json({
+      success: true,
+      data: parameters
+    });
+
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+//  LINK PARAMETER TO VALVE TYPE
+exports.linkParameter = async (req, res) => {
+  try {
+    const adminUser = req.user;
+    const ipAddress = req.ip;
+    const valveTypeId = req.params.id;
+    const { parameterId } = req.body;
+
+    if (!parameterId) {
+      return res.status(400).json({
+        success: false,
+        message: "Parameter ID is required."
+      });
+    }
+
+    const result = await valveService.linkParameter(adminUser, valveTypeId, parameterId, ipAddress);
+
+    res.json({
+      success: true,
+      message: result.message
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+//  UNLINK PARAMETER FROM VALVE TYPE
+exports.unlinkParameter = async (req, res) => {
+  try {
+    const adminUser = req.user;
+    const ipAddress = req.ip;
+    const valveTypeId = req.params.id;
+    const parameterId = req.params.parameterId;
+
+    const result = await valveService.unlinkParameter(adminUser, valveTypeId, parameterId, ipAddress);
+
+    res.json({
+      success: true,
+      message: result.message
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};

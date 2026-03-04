@@ -123,3 +123,83 @@ exports.deleteValveType = async (adminUser, id, ipAddress) => {
 
   return { message: "Valve type deleted successfully." };
 };
+
+//  GET PARAMETERS FOR VALVE TYPE
+exports.getValveTypeParameters = async (valveTypeId) => {
+  // Check if valve type exists
+  const valveType = await valveRepo.getValveTypeById(valveTypeId);
+  if (!valveType) {
+    throw new Error("Valve type not found.");
+  }
+  
+  return await valveRepo.getValveTypeParameters(valveTypeId);
+};
+
+//  GET AVAILABLE PARAMETERS (NOT LINKED)
+exports.getAvailableParameters = async (valveTypeId) => {
+  // Check if valve type exists
+  const valveType = await valveRepo.getValveTypeById(valveTypeId);
+  if (!valveType) {
+    throw new Error("Valve type not found.");
+  }
+  
+  return await valveRepo.getAvailableParameters(valveTypeId);
+};
+
+//  LINK PARAMETER TO VALVE TYPE
+exports.linkParameter = async (adminUser, valveTypeId, parameterId, ipAddress) => {
+  // Check if valve type exists
+  const valveType = await valveRepo.getValveTypeById(valveTypeId);
+  if (!valveType) {
+    throw new Error("Valve type not found.");
+  }
+  
+  // Check if parameter is already linked
+  const isLinked = await valveRepo.isParameterLinked(valveTypeId, parameterId);
+  if (isLinked) {
+    throw new Error("Parameter is already linked to this valve type.");
+  }
+  
+  // Link parameter
+  await valveRepo.linkParameter(valveTypeId, parameterId);
+  
+  // Audit log
+  await auditRepo.logAction(
+    adminUser.id,
+    "LINK_PARAMETER",
+    "VALVE_TYPE",
+    valveTypeId,
+    ipAddress
+  );
+  
+  return { message: "Parameter linked successfully." };
+};
+
+//  UNLINK PARAMETER FROM VALVE TYPE
+exports.unlinkParameter = async (adminUser, valveTypeId, parameterId, ipAddress) => {
+  // Check if valve type exists
+  const valveType = await valveRepo.getValveTypeById(valveTypeId);
+  if (!valveType) {
+    throw new Error("Valve type not found.");
+  }
+  
+  // Check if parameter is linked
+  const isLinked = await valveRepo.isParameterLinked(valveTypeId, parameterId);
+  if (!isLinked) {
+    throw new Error("Parameter is not linked to this valve type.");
+  }
+  
+  // Unlink parameter
+  await valveRepo.unlinkParameter(valveTypeId, parameterId);
+  
+  // Audit log
+  await auditRepo.logAction(
+    adminUser.id,
+    "UNLINK_PARAMETER",
+    "VALVE_TYPE",
+    valveTypeId,
+    ipAddress
+  );
+  
+  return { message: "Parameter unlinked successfully." };
+};
