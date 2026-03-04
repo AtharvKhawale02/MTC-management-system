@@ -9,6 +9,8 @@ import ViewCertificate from "./pages/ViewCertificate";
 import UserManagement from "./pages/admin/UserManagement";
 import ValveConfiguration from "./pages/admin/ValveConfiguration";
 import ValveTypes from "./pages/admin/ValveTypes";
+import Parameters from "./pages/admin/Parameters";
+import ParameterValues from "./pages/admin/ParameterValues";
 import AccessoriesConfiguration from "./pages/admin/AccessoriesConfiguration";
 import APIConfiguration from "./pages/admin/APIConfiguration";
 import AccessoryComponent from "./pages/admin/AccessoryComponent";
@@ -60,6 +62,22 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <ValveTypes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/valve-config/parameters"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Parameters />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/valve-config/parameters/:parameterId/values"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <ParameterValues />
               </ProtectedRoute>
             }
           />

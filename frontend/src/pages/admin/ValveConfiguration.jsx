@@ -25,13 +25,16 @@ function ValveConfiguration() {
         </div>
 
         {/* Future cards can be added here */}
-        <div className="config-card coming-soon">
+        <div
+          className="config-card"
+          onClick={() => navigate("/admin/valve-config/parameters")}
+        >
           <div className="config-card-icon"></div>
           <h3 className="config-card-title">Parameters</h3>
           <p className="config-card-description">
             Configure valve parameters and specifications
           </p>
-          <span className="config-card-badge">Coming Soon</span>
+          <button className="config-card-button">Manage →</button>
         </div>
       </div>
     </div>
