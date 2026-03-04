@@ -54,6 +54,23 @@ CREATE TABLE IF NOT EXISTS mtc (
   FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT
 );
 
+-- 6. Valve Types Table
+CREATE TABLE IF NOT EXISTS valve_types (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 7. Valve Parameters Table (for linking parameters to valve types)
+CREATE TABLE IF NOT EXISTS valve_parameters (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  valve_type_id INT NOT NULL,
+  parameter_name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (valve_type_id) REFERENCES valve_types(id) ON DELETE CASCADE
+);
+
 -- Insert sample units
 INSERT IGNORE INTO units (id, name) VALUES
 (1, 'Unit A'),
@@ -68,3 +85,4 @@ CREATE INDEX idx_audit_logs_user_id ON audit_logs(user_id);
 CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
 CREATE INDEX idx_tcds_created_by ON tcds(created_by);
 CREATE INDEX idx_mtc_created_by ON mtc(created_by);
+CREATE INDEX idx_valve_parameters_valve_type_id ON valve_parameters(valve_type_id);

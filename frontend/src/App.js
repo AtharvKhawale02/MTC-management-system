@@ -8,6 +8,7 @@ import ViewTCDS from "./pages/ViewTCDS";
 import ViewCertificate from "./pages/ViewCertificate";
 import UserManagement from "./pages/admin/UserManagement";
 import ValveConfiguration from "./pages/admin/ValveConfiguration";
+import ValveTypes from "./pages/admin/ValveTypes";
 import AccessoriesConfiguration from "./pages/admin/AccessoriesConfiguration";
 import APIConfiguration from "./pages/admin/APIConfiguration";
 import AccessoryComponent from "./pages/admin/AccessoryComponent";
@@ -51,6 +52,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <ValveConfiguration />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/valve-config/valve-types"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <ValveTypes />
               </ProtectedRoute>
             }
           />
