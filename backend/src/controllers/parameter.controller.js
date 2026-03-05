@@ -48,11 +48,15 @@ exports.createParameter = async (req, res) => {
     const ipAddress = req.ip;
     const data = req.body;
 
-    await parameterService.createParameter(adminUser, data, ipAddress);
+    const result = await parameterService.createParameter(adminUser, data, ipAddress);
+    
+    // Fetch the newly created parameter
+    const newParameter = await parameterService.getParameterById(result.insertId);
 
     res.status(201).json({
       success: true,
-      message: "Parameter created successfully."
+      message: "Parameter created successfully.",
+      data: newParameter
     });
 
   } catch (error) {

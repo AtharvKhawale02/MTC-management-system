@@ -94,11 +94,12 @@ function Accessories() {
 
   return (
     <div className="accessories-container">
+      <button className="btn-back" onClick={() => navigate("/admin/accessories-config")}>
+        ← Back
+      </button>
+
       <div className="accessories-header">
         <div>
-          <button className="btn-back" onClick={() => navigate("/admin/accessories-config")}>
-            ← Back to Configuration
-          </button>
           <h1 className="accessories-title">Accessories Configuration Master</h1>
           <p className="accessories-subtitle">Manage Accessories</p>
         </div>
@@ -116,62 +117,60 @@ function Accessories() {
       {loading ? (
         <div className="loading-container">Loading accessories...</div>
       ) : (
-        <div className="table-card">
-          <div className="table-responsive">
-            <table className="accessories-table">
-              <thead>
+        <div className="table-responsive">
+          <table className="accessories-table">
+            <thead>
+              <tr>
+                <th>Accessory Name</th>
+                <th>No. of Parameters</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {accessories.length === 0 ? (
                 <tr>
-                  <th>Accessory Name</th>
-                  <th>No. of Parameters</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
+                  <td colSpan="4" className="no-data-row">
+                    No accessories found
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {accessories.length === 0 ? (
-                  <tr>
-                    <td colSpan="4" className="no-data-row">
-                      No accessories found
+              ) : (
+                accessories.map((accessory) => (
+                  <tr key={accessory.id}>
+                    <td className="accessory-name-cell">{accessory.name}</td>
+                    <td>
+                      <span className="parameter-count-badge">
+                        {accessory.parameter_count}
+                      </span>
+                    </td>
+                    <td>
+                      {new Date(accessory.created_at).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </td>
+                    <td>
+                      <div className="action-buttons">
+                        <button
+                          className="btn-edit"
+                          onClick={() => handleEdit(accessory)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn-delete"
+                          onClick={() => setAccessoryToDelete(accessory)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                ) : (
-                  accessories.map((accessory) => (
-                    <tr key={accessory.id}>
-                      <td className="accessory-name-cell">{accessory.name}</td>
-                      <td>
-                        <span className="parameter-count-badge">
-                          {accessory.parameter_count}
-                        </span>
-                      </td>
-                      <td>
-                        {new Date(accessory.created_at).toLocaleDateString("en-IN", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </td>
-                      <td>
-                        <div className="action-buttons">
-                          <button
-                            className="btn-edit"
-                            onClick={() => handleEdit(accessory)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn-delete"
-                            onClick={() => setAccessoryToDelete(accessory)}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       )}
 

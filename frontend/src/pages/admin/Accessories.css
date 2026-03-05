@@ -4,6 +4,28 @@
   background-color: #f5f5f5;
 }
 
+.btn-back {
+  background: white;
+  color: #1e3a8a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-back:hover {
+  background-color: #f3f4f6;
+  color: #1e40af;
+}
+
 .accessories-header {
   display: flex;
   justify-content: space-between;
@@ -24,8 +46,10 @@
 }
 
 .btn-back:hover {
-  color: #1e40af;
-  text-decoration: underline;
+  background-color: #1e3a8a;
+  color: white;
+  transform: translateX(-4px);
+  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
 }
 
 .accessories-title {
@@ -89,20 +113,17 @@
   font-size: 16px;
 }
 
-.table-card {
+.table-responsive {
+  overflow-x: auto;
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.table-responsive {
-  overflow-x: auto;
 }
 
 .accessories-table {
   width: 100%;
   border-collapse: collapse;
+  background: white;
 }
 
 .accessories-table thead {
@@ -123,6 +144,7 @@
 .accessories-table tbody tr {
   border-bottom: 1px solid #f3f4f6;
   transition: background-color 0.15s ease;
+  background: white;
 }
 
 .accessories-table tbody tr:hover {
@@ -368,6 +390,11 @@
 @media (max-width: 768px) {
   .accessories-container {
     padding: 20px;
+  }
+
+  .btn-back {
+    width: 100%;
+    justify-content: center;
   }
 
   .accessories-header {
