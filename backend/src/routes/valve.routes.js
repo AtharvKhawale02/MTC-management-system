@@ -45,7 +45,7 @@ router.delete(
   valveController.deleteValveType
 );
 
-// ✅ GET PARAMETERS FOR VALVE TYPE
+//  GET PARAMETERS FOR VALVE TYPE
 router.get(
   "/valve-types/:id/parameters",
   authenticate,
@@ -53,7 +53,7 @@ router.get(
   valveController.getValveTypeParameters
 );
 
-// ✅ GET AVAILABLE PARAMETERS (NOT LINKED)
+//  GET AVAILABLE PARAMETERS (NOT LINKED)
 router.get(
   "/valve-types/:id/available-parameters",
   authenticate,
@@ -61,7 +61,7 @@ router.get(
   valveController.getAvailableParameters
 );
 
-// ✅ LINK PARAMETER TO VALVE TYPE
+//  CREATE VALVE-SPECIFIC PARAMETER OR LINK EXISTING PARAMETER
 router.post(
   "/valve-types/:id/parameters",
   authenticate,
@@ -69,12 +69,48 @@ router.post(
   valveController.linkParameter
 );
 
-// ✅ UNLINK PARAMETER FROM VALVE TYPE
+// UPDATE VALVE-SPECIFIC PARAMETER
+router.put(
+  "/valve-types/:id/parameters/:parameterId",
+  authenticate,
+  authorize("admin"),
+  valveController.updateValveParameter
+);
+
+// DELETE VALVE-SPECIFIC PARAMETER OR UNLINK PARAMETER
 router.delete(
   "/valve-types/:id/parameters/:parameterId",
   authenticate,
   authorize("admin"),
   valveController.unlinkParameter
+);
+
+// ============================================================
+// PARAMETER VALUES ROUTES
+// ============================================================
+
+// GET PARAMETER VALUES
+router.get(
+  "/valve-types/:id/parameters/:parameterId/values",
+  authenticate,
+  authorize("admin"),
+  valveController.getParameterValues
+);
+
+// CREATE PARAMETER VALUE
+router.post(
+  "/valve-types/:id/parameters/:parameterId/values",
+  authenticate,
+  authorize("admin"),
+  valveController.createParameterValue
+);
+
+// DELETE PARAMETER VALUE
+router.delete(
+  "/valve-types/:id/parameters/:parameterId/values/:valueId",
+  authenticate,
+  authorize("admin"),
+  valveController.deleteParameterValue
 );
 
 module.exports = router;

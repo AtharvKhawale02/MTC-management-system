@@ -492,3 +492,229 @@
   border-left: 3px solid #3b82f6;
   line-height: 1.5;
 }
+
+/* Valve Name Editor Styles */
+.valve-name-editor {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.valve-name-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.valve-name-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  min-width: 100px;
+}
+
+.valve-name-display-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.valve-name-display {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin: 0;
+}
+
+.btn-edit-valve-name {
+  background-color: transparent;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-edit-valve-name:hover {
+  background-color: #eff6ff;
+  border-color: #1e40af;
+}
+
+.valve-name-edit-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.valve-name-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #1e40af;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e3a8a;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.valve-name-input:focus {
+  outline: none;
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.btn-save-valve-name {
+  background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-save-valve-name:hover {
+  opacity: 0.9;
+}
+
+.btn-cancel-valve-name {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-cancel-valve-name:hover {
+  background-color: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .valve-name-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .valve-name-label {
+    min-width: auto;
+  }
+  
+  .valve-name-display-group,
+  .valve-name-edit-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .valve-name-input {
+    width: 100%;
+  }
+  
+  .btn-save-valve-name,
+  .btn-cancel-valve-name,
+  .btn-edit-valve-name {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Dropdown Values Management Styles */
+.dropdown-values-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.value-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.value-input {
+  flex: 1;
+  margin-bottom: 0 !important;
+}
+
+.btn-remove-value {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  width: 36px;
+  height: 38px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0;
+}
+
+.btn-remove-value:hover {
+  background-color: #fecaca;
+  border-color: #f87171;
+}
+
+.btn-add-value {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-add-value:hover {
+  background-color: #dbeafe;
+  border-color: #1e40af;
+}
+
+.loading-values {
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .value-input-row {
+    flex-direction: row;
+  }
+  
+  .btn-add-value {
+    width: 100%;
+    justify-content: center;
+  }
+}

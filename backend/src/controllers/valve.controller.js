@@ -156,26 +156,79 @@ exports.getAvailableParameters = async (req, res) => {
   }
 };
 
-//  LINK PARAMETER TO VALVE TYPE
+// LINK PARAMETER TO VALVE TYPE
 exports.linkParameter = async (req, res) => {
   try {
     const adminUser = req.user;
     const ipAddress = req.ip;
     const valveTypeId = req.params.id;
-    const { parameterId } = req.body;
+    const { parameterId, name, type } = req.body;
 
-    if (!parameterId) {
-      return res.status(400).json({
-        success: false,
-        message: "Parameter ID is required."
+    // If parameterId is provided, it's a link operation
+    if (parameterId) {
+      const result = await valveService.linkParameter(adminUser, valveTypeId, parameterId, ipAddress);
+      return res.json({
+        success: true,
+        message: result.message
       });
     }
 
-    const result = await valveService.linkParameter(adminUser, valveTypeId, parameterId, ipAddress);
+    // Otherwise, it's a create operation for valve-specific parameter
+    if (!name || !type) {
+      return res.status(400).json({
+        success: false,
+        message: "Parameter name and type are required."
+      });
+    }
+
+    const result = await valveService.createValveParameter(
+      adminUser,
+      valveTypeId,
+      { name, type },
+      ipAddress
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Parameter created successfully.",
+      data: result
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+//  UPDATE VALVE-SPECIFIC PARAMETER
+exports.updateValveParameter = async (req, res) => {
+  try {
+    const adminUser = req.user;
+    const ipAddress = req.ip;
+    const valveTypeId = req.params.id;
+    const parameterId = req.params.parameterId;
+    const { name, type } = req.body;
+
+    if (!name || !type) {
+      return res.status(400).json({
+        success: false,
+        message: "Parameter name and type are required."
+      });
+    }
+
+    await valveService.updateValveParameter(
+      adminUser,
+      valveTypeId,
+      parameterId,
+      { name, type },
+      ipAddress
+    );
 
     res.json({
       success: true,
-      message: result.message
+      message: "Parameter updated successfully."
     });
 
   } catch (error) {
@@ -199,6 +252,81 @@ exports.unlinkParameter = async (req, res) => {
     res.json({
       success: true,
       message: result.message
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// ============================================================
+// PARAMETER VALUES CONTROLLERS
+// ============================================================
+
+//  GET PARAMETER VALUES
+exports.getParameterValues = async (req, res) => {
+  try {
+    const parameterId = req.params.parameterId;
+    const values = await valveService.getParameterValues(parameterId);
+
+    res.json({
+      success: true,
+      data: values
+    });
+
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+//  CREATE PARAMETER VALUE
+exports.createParameterValue = async (req, res) => {
+  try {
+    const adminUser = req.user;
+    const ipAddress = req.ip;
+    const parameterId = req.params.parameterId;
+    const { value } = req.body;
+
+    if (!value) {
+      return res.status(400).json({
+        success: false,
+        message: "Value is required."
+      });
+    }
+
+    await valveService.createParameterValue(adminUser, parameterId, value, ipAddress);
+
+    res.status(201).json({
+      success: true,
+      message: "Value created successfully."
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+//  DELETE PARAMETER VALUE
+exports.deleteParameterValue = async (req, res) => {
+  try {
+    const adminUser = req.user;
+    const ipAddress = req.ip;
+    const valueId = req.params.valueId;
+
+    await valveService.deleteParameterValue(adminUser, valueId, ipAddress);
+
+    res.json({
+      success: true,
+      message: "Value deleted successfully."
     });
 
   } catch (error) {

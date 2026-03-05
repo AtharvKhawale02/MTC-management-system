@@ -203,3 +203,99 @@ exports.unlinkParameter = async (adminUser, valveTypeId, parameterId, ipAddress)
   
   return { message: "Parameter unlinked successfully." };
 };
+
+//  CREATE VALVE-SPECIFIC PARAMETER
+exports.createValveParameter = async (adminUser, valveTypeId, parameterData, ipAddress) => {
+  // Check if valve type exists
+  const valveType = await valveRepo.getValveTypeById(valveTypeId);
+  if (!valveType) {
+    throw new Error("Valve type not found.");
+  }
+
+  // Create parameter directly for this valve type
+  const result = await valveRepo.createValveParameter(valveTypeId, parameterData);
+
+  // Audit log
+  await auditRepo.logAction(
+    adminUser.id,
+    "CREATE_VALVE_PARAMETER",
+    "VALVE_TYPE",
+    valveTypeId,
+    ipAddress
+  );
+
+  return result;
+};
+
+//  UPDATE VALVE-SPECIFIC PARAMETER
+exports.updateValveParameter = async (adminUser, valveTypeId, parameterId, parameterData, ipAddress) => {
+  // Check if valve type exists
+  const valveType = await valveRepo.getValveTypeById(valveTypeId);
+  if (!valveType) {
+    throw new Error("Valve type not found.");
+  }
+
+  // Update parameter
+  await valveRepo.updateValveParameter(valveTypeId, parameterId, parameterData);
+
+  // Audit log
+  await auditRepo.logAction(
+    adminUser.id,
+    "UPDATE_VALVE_PARAMETER",
+    "VALVE_TYPE",
+    valveTypeId,
+    ipAddress
+  );
+
+  return { message: "Parameter updated successfully." };
+};
+
+// ============================================================
+// PARAMETER VALUES SERVICES
+// ============================================================
+
+//  GET PARAMETER VALUES
+exports.getParameterValues = async (parameterId) => {
+  const values = await valveRepo.getParameterValues(parameterId);
+  return values;
+};
+
+//  CREATE PARAMETER VALUE
+exports.createParameterValue = async (adminUser, parameterId, value, ipAddress) => {
+  // Check if parameter exists
+  const parameter = await valveRepo.getParameterById(parameterId);
+  if (!parameter) {
+    throw new Error("Parameter not found.");
+  }
+
+  // Create value
+  await valveRepo.createParameterValue(parameterId, value);
+
+  // Audit log
+  await auditRepo.logAction(
+    adminUser.id,
+    "CREATE_PARAMETER_VALUE",
+    "PARAMETER",
+    parameterId,
+    ipAddress
+  );
+
+  return { message: "Value created successfully." };
+};
+
+//  DELETE PARAMETER VALUE
+exports.deleteParameterValue = async (adminUser, valueId, ipAddress) => {
+  // Delete value
+  await valveRepo.deleteParameterValue(valueId);
+
+  // Audit log
+  await auditRepo.logAction(
+    adminUser.id,
+    "DELETE_PARAMETER_VALUE",
+    "PARAMETER_VALUE",
+    valueId,
+    ipAddress
+  );
+
+  return { message: "Value deleted successfully." };
+};
