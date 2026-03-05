@@ -24,7 +24,17 @@ function AccessoriesConfiguration() {
           <button className="config-card-button">Manage →</button>
         </div>
 
-        {/* Future cards can be added here */}
+        <div
+          className="config-card"
+          onClick={() => navigate("/admin/valve-config/parameters")}
+        >
+          <div className="config-card-icon"></div>
+          <h3 className="config-card-title">Parameters</h3>
+          <p className="config-card-description">
+            Configure parameters and their values
+          </p>
+          <button className="config-card-button">Manage →</button>
+        </div>
       </div>
     </div>
   );

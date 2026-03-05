@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "setup-db": "node src/scripts/setupDatabase.js",
+    "migrate:parameters": "node src/scripts/runParametersMigration.js",
+    "migrate:accessory-params": "node src/scripts/runAccessoryParametersMigration.js",
+    "create:admin": "node src/scripts/createAdminUser.js"
   },
   "keywords": [],
   "author": "",
