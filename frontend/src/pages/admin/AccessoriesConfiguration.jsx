@@ -1,8 +1,31 @@
+import { useNavigate } from "react-router-dom";
+import "./AccessoriesConfiguration.css";
+
 function AccessoriesConfiguration() {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <h1>Accessories Configuration Master</h1>
-      <p>Manage accessories configurations</p>
+    <div className="accessories-config-container">
+      <h1 className="accessories-config-title">Accessories Configuration Master</h1>
+      <p className="accessories-config-description">
+        Configure accessories and their associated parameters
+      </p>
+
+      <div className="config-cards">
+        <div
+          className="config-card"
+          onClick={() => navigate("/admin/accessories-config/accessories")}
+        >
+          <div className="config-card-icon"></div>
+          <h3 className="config-card-title">Accessories</h3>
+          <p className="config-card-description">
+            Manage accessories and their associated parameters
+          </p>
+          <button className="config-card-button">Manage →</button>
+        </div>
+
+        {/* Future cards can be added here */}
+      </div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth.routes");
 const adminRoutes = require("./routes/admin.routes");
 const valveRoutes = require("./routes/valve.routes");
 const parameterRoutes = require("./routes/parameter.routes");
+const accessoryRoutes = require("./routes/accessory.routes");
 const app = express();
 
 // Middleware - runs on every request
@@ -22,5 +23,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api", valveRoutes);
 app.use("/api", parameterRoutes);
+app.use("/api", accessoryRoutes);
 
 module.exports = app;

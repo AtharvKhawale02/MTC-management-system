@@ -12,6 +12,8 @@ import ValveTypes from "./pages/admin/ValveTypes";
 import ValveTypeParameters from "./pages/admin/ValveTypeParameters";
 import Parameters from "./pages/admin/Parameters";
 import ParameterValues from "./pages/admin/ParameterValues";
+import Accessories from "./pages/admin/Accessories";
+import AccessoryParameters from "./pages/admin/AccessoryParameters";
 import AccessoriesConfiguration from "./pages/admin/AccessoriesConfiguration";
 import APIConfiguration from "./pages/admin/APIConfiguration";
 import AccessoryComponent from "./pages/admin/AccessoryComponent";
@@ -95,6 +97,22 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AccessoriesConfiguration />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/accessories-config/accessories"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Accessories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/accessories-config/accessories/:id/parameters"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AccessoryParameters />
               </ProtectedRoute>
             }
           />
