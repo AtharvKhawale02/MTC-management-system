@@ -160,7 +160,7 @@ function AccessoryParameters() {
 
   return (
     <div className="accessory-params-container">
-      <button className="btn-back" onClick={() => navigate("/admin/accessories-config/accessories")}>
+      <button className="btn-back" onClick={() => navigate("/admin/accessories-config")}>
         ← Back
       </button>
 

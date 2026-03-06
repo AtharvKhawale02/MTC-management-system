@@ -101,15 +101,7 @@ function App() {
             }
           />
           <Route
-            path="admin/accessories-config/accessories"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <Accessories />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="admin/accessories-config/accessories/:id/parameters"
+            path="admin/accessories-config/:id/parameters"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AccessoryParameters />
